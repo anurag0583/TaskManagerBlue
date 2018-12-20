@@ -60,25 +60,16 @@ Rails.application.configure do
     port: 3000
   }
   # config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.smtp_settings = {
-  #   :address => "smtp.gmail.com",
-  #   :port => 587,
-  #   domain: 'inuscg.com',
-  #   authentication: "plain",
-  #   enable_starttls_auto: true,
-  #   user_name:'pooja.mokariya@inuscg.com',
-  #   password: 'pooja#12345'
-  # }
  
-  # ActionMailer::Base.smtp_settings = {
-  #   :user_name => 'pooja-inuscg',
-  #   :password => 'data12care',
-  #   :domain => 'localhost:3000',
-  #   :address => 'smtp.sendgrid.net',
-  #   :port => 587,
-  #   :authentication => :plain,
-  #   :enable_starttls_auto => true
-  # }
+  ActionMailer::Base.smtp_settings = {
+    :user_name => 'Milindsik',
+    :password => 'D@ata12care',
+    :domain => 'localhost:3000',
+    :address => 'smtp.sendgrid.net',
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
   
   # config.consider_all_requests_local = false
 
