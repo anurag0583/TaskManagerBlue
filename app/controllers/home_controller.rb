@@ -1,9 +1,14 @@
 class HomeController < ApplicationController
+  before_action :authenticate_user!
+  
   def index
     if user_signed_in?
-    	@projects = current_user.projects.count
+      @recent_projects = Project.all.last(2)
+      @recent_tasks = Task.all.last(6)
+    	@project_count = current_user.projects.count
     	@task_count = Task.all.where(:assign_task_user_id => current_user.id).count
-      @teams = current_user.teams.count
+      @team_count = current_user.teams.count
+      @clients = User.where(role: "client")
       
       # task progress  chart
       @pieSize = {
@@ -64,6 +69,5 @@ class HomeController < ApplicationController
           }
       ].to_json
     end
-
   end
 end

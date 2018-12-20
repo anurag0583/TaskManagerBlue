@@ -1,56 +1,219 @@
-<div class="row">
-  <div class="col-lg-12">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        Your Profile
+<div class="page-wrapper" style="min-height: 310px;">
+  <div class="content container-fluid">
+    <div class="row">
+      <div class="col-sm-8">
+        <h4 class="page-title">My Profile</h4>
       </div>
-      <div class="panel-body">
-      	<p>
-        	<b>Profile Pic : </b>
-        	<%= image_tag @user.photo.url(:small) ,:width => "100" %> 
-        </p>
-        <br>
-        <p>
-        	<b>First Name : </b>
-        	<%= full_name(@user) %>
-        </p>
-        <br>
-        <p>
-        	<b>First Name : </b>
-        	<%= @user.firstname %>
-        </p>
-        <br>
-        <p>
-        	<b>Last Name : </b>
-        	<%= @user.lastname %>
-        </p>
-        <br>
-        <p>
-        	<b>Email : </b>
-        	<%= @user.email %>
-        </p>
-        <br>
-        <p>
-        	<b>Phone Number : </b>
-        	<%= @user.phone_number %>
-        </p>
-        <br>
-         <p>
-          <b>User Role : </b>
-          <%= @user.role %>
-        </p>
-        <br>
-         <p>
-          <b>Notification with email : </b>
-          <%= @user.is_turn_on %>
-        </p>
+      <div class="col-sm-4 text-right m-b-30">
+        <a href="<%= edit_user_path(@user) %>" class="btn btn-primary rounded"><i class="fa fa-plus"></i> Edit Profile</a>
+      </div>
+    </div>
+    <div class="card-box m-b-0">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="profile-view">
+            <div class="profile-img-wrap">
+              <div class="profile-img">
+                <a href=""><img class="avatar" src="<%= @user.photo.url(:small) %>" alt=""></a>
+              </div>
+            </div>
+            <div class="profile-basic">
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="profile-info-left">
+                    <h3 class="user-name m-t-0"><%= full_name(@user) %></h3>
+                    <h5 class="company-role m-t-0 m-b-0"><a href=""><%= @user.designation %></a></h5>
+                    <!-- <small class="text-muted"></small> -->
+                    <div class="staff-id">Phone No.  : <%= @user.phone_number %></div>
+                    <div class="staff-id">Email Address  : <%= @user.email %></div>
+                    <div class="staff-id">User Role  : <%= @user.role %></div>
+                    <div class="staff-id">Notification with email : <%= @user.is_turn_on %></div>
+                    <div class="staff-msg">
+                      <a href="chat.html" class="btn btn-primary">Send Message</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-7">
+                  <ul class="personal-info">
+                    <li>
+                      <span class="title">Address:</span>
+                      <span class="text"><%= @user.address %></span>
+                    </li>
+                    <li>
+                      <span class="title">State:</span>
+                      <span class="text"><%= @user.state %></span>
+                    </li>
+                    <li>
+                      <span class="title">Country:</span>
+                      <span class="text"><%= @user.country %></span>
+                    </li>
+                    <li>
+                      <span class="title">Pincode:</span>
+                      <span class="text"><%= @user.pincode %></span>
+                    </li>
+                    <li>
+                      <span class="title">Birthday:</span>
+                      <span class="text"><%= @user.bod.strftime("%d %b, %Y") %></span>
+                    </li>
+                    <li>
+                      <span class="title">Gender:</span>
+                      <span class="text"><%= @user.gender%></span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+    <div class="card-box tab-box">
+      <div class="row user-tabs">
+        <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
+          <ul class="nav nav-tabs tabs nav-tabs-bottom">
+            <li class="col-sm-3 active"><a data-toggle="tab" href="#myprojects" aria-expanded="true">My Projects</a></li>
+            <li class="col-sm-3"><a data-toggle="tab" href="#tasks" aria-expanded="false">Tasks</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12"> 
+        <div class="tab-content  profile-tab-content">
+          <div id="myprojects" class="tab-pane fade active in">
+            <div class="row">
+              <% @projects.each do |project| %> 
+                <div class="col-lg-3 col-sm-4">
+                  <div class="card-box project-box">
+                    <div class="dropdown profile-action">
+                      <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                      <ul class="dropdown-menu pull-right">
+                        <li>
+                          <a href="<%= edit_project_path(project) %>" data-toggle="modal" data-target="#edit_project"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        </li>
+                        <li>
+                          <a href="<%= project_path(project) %>" data-toggle="modal" data-target="#delete_project"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <h4 class="project-title"><a href="<%= project_path(project) %>"><%= project.name %></a></h4>
+                    <small class="block text-ellipsis m-b-15">
+                      <span class="text-xs">
+                        <%= project.tasks.where("status != ? ", "done" ).count %>
+                      </span>
+                      <span class="text-muted">open tasks, </span>
+                      <span class="text-xs">
+                        <%= project.tasks.where(status: "done").count %>
+                      </span>
+                      <span class="text-muted">tasks completed</span>
+                    </small>
+                    <p class="text-muted">
+                      <%= project.description %>
+                    </p>
+                    <div class="pro-deadline m-b-15">
+                      <div class="sub-title">
+                        Deadline:
+                      </div>
+                      <div class="text-muted">
+                        <%= project.deadline.strftime("%d %b, %Y") %>
+                      </div>
+                    </div>
+                    <div class="project-members m-b-15">
+                      <div>Project Leader :</div>
+                      <ul class="team-members">
+                        <li>
+                          <a href="#" data-toggle="tooltip" title="" data-original-title="<%= full_name(User.find(project.created_by_id)) %>">
+                            <img src="<%= User.find(project.created_by_id).photo.url(:small) %>" alt="<%= full_name(User.find(project.created_by_id)) %>">
+                          </a>
+                        </li>
+                      </ul> 
+                    </div>
+                    <div class="project-members m-b-15">
+                      <div>Team :</div>
+                      <ul class="team-members">
+                        <% project.users.each do |team_mem| %>
+                          <li>
+                            <a href="#" data-toggle="tooltip" title="" data-original-title="<%= full_name(team_mem) %>"><img src="<%= team_mem.photo.url(:small) %>" alt="<%= full_name(team_mem) %>"></a>
+                          </li>
+                        <% end %>
+                        <!-- <li>
+                          <a href="#" class="all-users">+15</a>
+                        </li> -->
+                      </ul>
+                    </div>
+                    <% not_done_task = project.tasks.where("status != ? ", "done" ).count  %>
+                    <% done_task = project.tasks.where(status: "done").count  %>
+                    <% if done_task > not_done_task %>
+                      <p class="m-b-5">Progress <span class="text-success pull-right">70%</span></p>
+                      <div class="progress progress-xs m-b-0">
+                        <div class="progress-bar progress-bar-success" role="progressbar" data-toggle="tooltip" title="" style="width: 70%" data-original-title="70%"></div>
+                      </div>
+                    <% else %>
+                      <p class="m-b-5">Progress <span class="text-success pull-right">40%</span></p>
+                      <div class="progress progress-xs m-b-0">
+                        <div class="progress-bar progress-bar-success" role="progressbar" data-toggle="tooltip" title="" style="width: 40%" data-original-title="40%"></div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <div id="tasks" class="tab-pane fade">
+            <div class="project-task">
+              <div class="tabbable">
+                <ul class="nav nav-tabs nav-tabs-top nav-justified m-b-0">
+                  <li class="active"><a href="#all_tasks" data-toggle="tab" aria-expanded="false">All Tasks</a></li>
+                  <li><a href="#pending_tasks" data-toggle="tab" aria-expanded="false">Pending Tasks</a></li>
+                  <li><a href="#completed_tasks" data-toggle="tab" aria-expanded="false">Completed Tasks</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="all_tasks">
+                    <div class="task-wrapper">
+                      <div class="task-list-container">
+                        <div class="task-list-body">
+                          <ul id="task-list">
+                            <% @tasks.each do |task| %>
+                              <li class="completed task">
+                                <div class="task-container">
+                                  <span class="task-action-btn task-check">
+                                    <span class="action-circle large complete-btn" title="Mark Complete">
+                                      <i class="material-icons">check</i>
+                                    </span>
+                                  </span>
+                                  <span class="task-label"><%= task.name %></span>
+                                  <span class="task-action-btn task-btn-right" style="width: 70px;">
+                                    <span class="action-circle large" title="Assign">
+                                      <i class="material-icons">person_add</i>
+                                    </span>
+                                    <span class="action-circle large delete-btn" title="Delete Task">
+                                      <i class="material-icons">delete</i>
+                                    </span>
+                                  </span>
+                                </div>
+                              </li>
+                            <% end %>
+                          </ul>
+                        </div>
+                        <div class="task-list-footer">
+                          <div class="new-task-wrapper">
+                            <textarea id="new-task" placeholder="Enter new task here. . ."></textarea>
+                            <span class="error-message hidden">You need to enter a task first</span>
+                            <span class="add-new-task-btn btn" id="add-task">Add Task</span>
+                            <span class="cancel-btn btn" id="close-task-panel">Close</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="pending_tasks"></div>
+                  <div class="tab-pane" id="completed_tasks"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-<!-- 
-<p id="notice"><%#= notice %></p>
-<%#= link_to 'Edit', edit_user_path(@user) %> |
-<%#= link_to 'Back', users_path %>
- -->
+</div> 

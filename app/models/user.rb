@@ -7,7 +7,8 @@ class User < ApplicationRecord
  	has_attached_file :photo, :styles => { :small => "150x150>" },
                   :url  => "/assets/products/:id/:style/:basename.:extension",
                   :path => ":rails_root/public/assets/products/:id/:style/:basename.:extension",
-                  :default_url => ":style/default-profile.jpg"
+                  :default_url => ActionController::Base.helpers.asset_path('user.jpg')
+
 
 	# validates_attachment_presence :photo
 	validates_attachment_size :photo, :less_than => 5.megabytes
@@ -19,7 +20,8 @@ class User < ApplicationRecord
   has_many :comments
   # belongs_to :role
   
-  ROLES = %w[admin manager employee].freeze
+  ROLES = %w[admin manager employee client].freeze
+  GENDER = %w[Male Female].freeze
   # ROLE = ["Admin","Manager","Employee"]
 
   after_create :set_user_project
@@ -27,7 +29,7 @@ class User < ApplicationRecord
 
   private
   def set_user_project
-    self.projects.create(:name=> "persnal_project",:created_by_id =>self.id)
+    self.projects.create(:name=> "persnal_project",description:"persnal_project", :created_by_id =>self.id , created_by: self.role , deadline: Date.today + 365*1 , priority: "hight", status: "Working", total_hours: "200")
   end
 
   def setup_default_role_for_new_users

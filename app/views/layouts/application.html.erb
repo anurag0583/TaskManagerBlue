@@ -5,83 +5,100 @@
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>   -->
-    <style>
-      *{
-        box-sizing: border-box;
-      }
+    <%= javascript_include_tag "https://js.stripe.com/v1/", "application" %>
+    <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
+    <link href="https://fonts.googleapis.com/css2f55.css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-      .columns {
-        float: left;
-        width: 33.3%;
-        padding: 8px;
-      }
-
-      .price {
-        list-style-type: none;
-        border: 1px solid #eee;
-        margin: 0;
-        padding: 0;
-        -webkit-transition: 0.3s;
-        transition: 0.3s;
-      }
-
-      .price:hover {
-        box-shadow: 0 8px 12px 0 rgba(0,0,0,0.2)
-      }
-
-      .price .header {
-        background-color: #111;
-        color: white;
-        font-size: 25px;
-      }
-
-      .price li {
-        border-bottom: 1px solid #eee;
-        padding: 20px;
-        text-align: center;
-      }
-
-      .price .grey {
-        background-color: #eee;
-        font-size: 20px;
-      }
-
-      .button {
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 10px 25px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 18px;
-      }
-
-      @media only screen and (max-width: 600px) {
-        .columns {
-            width: 100%;
-        }
-      }
-    </style>
-  </head>
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/style.css">
+    <link rel="stylesheet" type="text/css" href="/assets/plugins/morris/morris.css">
+    <link rel="stylesheet" type="text/css" href="/assets/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap-datetimepicker.min.css">
+   
+  </head> 
   <body>
-    <div id="wrapper">
+    <div class="main-wrapper">
       <% if user_signed_in? %>
         <%= render "layouts/navbar" %>
-        <div id="page-wrapper">
+        <%= render "layouts/side" %> 
           <%= yield %>
-        </div>
       <% else %>
         <div class="container">
           <% if notice.present? %>
-            <div class="col-lg-12 alert-success">
+            <div class="col-lg-12 alert-success" style="padding: 7px 0px 0px 0px ; margin: 10px 19px -50px 5px; text-align-last: center; border-radius: 50px;">
               <p id="notice"><%= notice %></p>
             </div>
           <% end %>
-
           <%= yield %>
         </div>
       <% end %>
     </div>
+  
+    <script type="text/javascript" src="/assets/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/assets/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/jquery.slimscroll.js"></script>
+    <script type="text/javascript" src="/assets/select2.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/morris/morris.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/raphael/raphael-min.js"></script>
+    <script type="text/javascript" src="/assets/app.js"></script>
+    <script type="text/javascript" src="/assets/task.js"></script>
+    <script type="text/javascript" src="/assets/moment.min.js"></script>
+    <script type="text/javascript" src="/assets/bootstrap-datetimepicker.min.js"></script>
+
+    <script type="text/javascript"> 
+        var data = [
+        { y: '2014', a: 50, b: 90},
+        { y: '2015', a: 65,  b: 75},
+        { y: '2016', a: 50,  b: 50},
+        { y: '2017', a: 75,  b: 60},
+        { y: '2018', a: 80,  b: 65},
+        { y: '2019', a: 90,  b: 70},
+        { y: '2020', a: 100, b: 75},
+        { y: '2021', a: 115, b: 75},
+        { y: '2022', a: 120, b: 85},
+        { y: '2023', a: 145, b: 85},
+        { y: '2024', a: 160, b: 95}
+      ],
+      config = {
+        data: data,
+        xkey: 'y',
+        ykeys: ['a', 'b'],
+        labels: ['Total Income', 'Total Outcome'],
+        fillOpacity: 0.6,
+        hideHover: 'auto',
+        behaveLikeLine: true,
+        resize: true,
+        pointFillColors:['#ffffff'],
+        pointStrokeColors: ['black'],
+        gridLineColor: '#eef0f2',
+        lineColors:['gray','#00c5fb']
+      };
+    config.element = 'area-chart';
+    Morris.Area(config);
+    config.element = 'line-chart';
+    Morris.Line(config);
+    config.element = 'bar-chart';
+    Morris.Bar(config);
+    config.element = 'stacked';
+    config.stacked = true;
+    Morris.Bar(config);
+    Morris.Donut({
+      element: 'pie-chart',
+      data: [
+      {label: "Employees", value: 30},
+      {label: "Clients", value: 15},
+      {label: "Projects", value: 45},
+      {label: "Tasks", value: 10}
+      ]
+    });
+      $(function() {
+        setTimeout(function() {
+            $("#notify").hide();
+        }, 5000);
+      });
+    </script>
+
   </body>
 </html>

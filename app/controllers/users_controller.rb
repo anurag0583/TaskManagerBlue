@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_user, only: [:show, :edit, :update, :destroy,:torn_off_email]
   load_and_authorize_resource
   # GET /users
@@ -10,6 +11,8 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @tasks = current_user.tasks
+    @projects = current_user.projects
   end
 
   # GET /users/new
@@ -75,6 +78,6 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       # params.fetch(:user, {})
-      params.require(:user).permit(:firstname, :lastname, :phone_number,:photo,:role,:is_turn_on,:plan)
+      params.require(:user).permit(:firstname, :lastname, :phone_number,:photo,:role,:is_turn_on,:plan,:bod,:address,:gender,:designation,:state,:country,:pincode)
     end
 end

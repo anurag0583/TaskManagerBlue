@@ -1,166 +1,647 @@
-<% if user_signed_in? %>
-	<div class="col-lg-12">
-	    <h1 class="page-header">Dashboard</h1>
-	</div>	
-  <div class="col-lg-4 col-md-4">
-      <div class="panel panel-primary">
-          <div class="panel-heading">
-              <div class="row">
-                  <div class="col-xs-3">
-                      <i class="fa fa-file-text fa-5x"></i>
-                  </div>
-                  <div class="col-xs-9 text-right">
-                      <div class="huge"><%= @projects %></div>
-                      <div>Projects</div>
-                  </div>
-              </div>
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="dash-widget clearfix card-box">
+          <span class="dash-widget-icon"><i class="fa fa-cubes" aria-hidden="true"></i></span>
+          <div class="dash-widget-info">
+            <h3><%= personal_project_cnt(current_user)+shared_project_cnt(current_user)  %></h3> 
+            <span>Projects</span>
           </div>
-          <a href="<%= projects_path %>">
-              <div class="panel-footer">
-                  <span class="pull-left">View Details</span>
-                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                  <div class="clearfix"></div>
-              </div>
-          </a>
-      </div> 
-  </div>
-  <div class="col-lg-4 col-md-4">
-      <div class="panel panel-green">
-          <div class="panel-heading">
-              <div class="row">
-                  <div class="col-xs-3">
-                      <i class="fa fa-tasks fa-5x"></i>
-                  </div>
-                  <div class="col-xs-9 text-right">
-                      <div class="huge"><%= @task_count %></div>
-                      <div>New Tasks!</div>
-                  </div>
-              </div>
-          </div>
-          <a href="<%= tasks_path %>">
-              <div class="panel-footer">
-                  <span class="pull-left">View Details</span>
-                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                  <div class="clearfix"></div>
-              </div>
-          </a>
-      </div>
-  </div>
-  <div class="col-lg-4 col-md-4">
-      <div class="panel panel-yellow">
-          <div class="panel-heading">
-              <div class="row">
-                  <div class="col-xs-3">
-                      <i class="fa  fa-user  fa-5x"></i>
-                  </div>
-                  <div class="col-xs-9 text-right">
-                      <div class="huge"><%= @teams %></div>
-                      <div>Teams</div>
-                  </div>
-              </div>
-          </div> 
-          <a href="<%= teams_path %>">
-              <div class="panel-footer">
-                  <span class="pull-left">View Details</span>
-                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                  <div class="clearfix"></div>
-              </div>
-          </a>
-      </div> 
-  </div>
- <!-- <div class="col-lg-3 col-md-6">
-      <div class="panel panel-red">
-          <div class="panel-heading">
-              <div class="row">
-                  <div class="col-xs-3">
-                      <i class="fa fa-support fa-5x"></i>
-                  </div>
-                  <div class="col-xs-9 text-right">
-                      <div class="huge">13</div>
-                      <div>Support Tickets!</div>
-                  </div>
-              </div>
-          </div>
-          <a href="#">
-              <div class="panel-footer">
-                  <span class="pull-left">View Details</span>
-                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                  <div class="clearfix"></div>
-              </div>
-          </a>
-      </div>
-  </div>    -->         
-  <div class="row">
-    <div class="col-lg-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Letest Task priority
         </div>
-        <div class="panel-body">
-          <div class="flot-chart">
-            <!-- <div class="flot-chart-content" id="flot-line-chart"></div> -->
-            <%= pie :pie_chart, @pieSize, @pieData%>  
+      </div>
+      <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="dash-widget clearfix card-box">
+          <span class="dash-widget-icon"><i class="fa fa-diamond" aria-hidden="true"></i></span>
+          <div class="dash-widget-info">
+            <h3>4</h3>
+            <span>Clients</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="dash-widget clearfix card-box">
+          <span class="dash-widget-icon"><i class="fa fa-tasks"></i></span>
+          <div class="dash-widget-info">
+            <h3><%= @task_count %></h3>
+            <span>Tasks</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6 col-lg-3">
+        <div class="dash-widget clearfix card-box">
+          <span class="dash-widget-icon"><i class="fa fa-user" aria-hidden="true"></i></span>
+          <div class="dash-widget-info">
+            <h3><%= @team_count %></h3>
+            <span>Teams</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          All Task Progress
-        </div>
-        <div class="panel-body">
-          <div class="flot-chart">
-            <!-- <div class="flot-chart-content" id="flot-line-chart"></div> -->
-            <%= pie :pie_chart_1, @pieSize_1, @pieData_1 %>  
+    <!-- <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-sm-6 text-center">
+            <div class="card-box">
+              <div id="area-chart" ></div>
+            </div>
+          </div>
+          <div class="col-sm-6 text-center">
+            <div class="card-box">
+              <div id="line-chart"></div>
+            </div>
+          </div>
+          <div  class="col-md-4 col-sm-12 text-center">
+            <div class="card-box">
+              <div id="bar-chart" ></div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 text-center">
+            <div class="card-box">
+              <div id="stacked" ></div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 text-center">
+            <div class="card-box">
+              <div id="pie-chart" ></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-<% else %>
-  <h1>
-    Welcome to Task Manager System| <%= link_to "Sign up", new_user_registration_path %> | <%= link_to "sign in", new_user_session_path %>
-  </h1>
-   <!-- <h2 style="text-align:center">Pricing Tables</h2>
-
-    <div class="columns">
-      <ul class="price">
-        <li class="header">Basic</li>
-        <li class="grey">$ 9.99 / year</li>
-        <li>10GB Storage</li>
-        <li>10 Emails</li>
-        <li>10 Domains</li>
-        <li>1GB Bandwidth</li>
-        <li class="grey">
-          <a href="#" class="button">Sign Up</a> 
-          <%#= link_to "Sign up", new_user_registration_path ,:class=>"button"%>
-        </li>
-      </ul>
-    </div>
-
-    <div class="columns">
-      <ul class="price">
-        <li class="header" style="background-color:#4CAF50">Pro</li>
-        <li class="grey">$ 24.99 / year</li>
-        <li>25GB Storage</li>
-        <li>25 Emails</li>
-        <li>25 Domains</li>
-        <li>2GB Bandwidth</li>
-        <li class="grey"><a href="#" class="button">Sign Up</a></li>
-      </ul>
-    </div>
-
-    <div class="columns">
-      <ul class="price">
-        <li class="header">Premium</li>
-        <li class="grey">$ 49.99 / year</li>
-        <li>50GB Storage</li>
-        <li>50 Emails</li>
-        <li>50 Domains</li>
-        <li>5GB Bandwidth</li>
-        <li class="grey"><a href="#" class="button">Sign Up</a></li>
-      </ul>
     </div> -->
-<% end %>
+   <!--  <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-table">
+          <div class="panel-heading">
+            <h3 class="panel-title">Invoices</h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-striped custom-table m-b-0">
+                <thead>
+                  <tr>
+                    <th>Invoice ID</th>
+                    <th>Client</th>
+                    <th>Due Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="invoice-view.html">#INV-0001</a></td>
+                    <td>
+                      <h2><a href="#">Hazel Nutt</a></h2>
+                    </td>
+                    <td>8 Aug 2017</td>
+                    <td>$380</td>
+                    <td>
+                      <span class="label label-warning-border">Partially Paid</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="invoice-view.html">#INV-0002</a></td>
+                    <td>
+                      <h2><a href="#">Paige Turner</a></h2>
+                    </td>
+                    <td>17 Sep 2017</td>
+                    <td>$500</td>
+                    <td>
+                      <span class="label label-success-border">Paid</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><a href="invoice-view.html">#INV-0003</a></td>
+                    <td>
+                      <h2><a href="#">Ben Dover</a></h2>
+                    </td>
+                    <td>30 Nov 2017</td>
+                    <td>$60</td>
+                    <td>
+                      <span class="label label-danger-border">Unpaid</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <a href="invoices.html" class="text-primary">View all invoices</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-table">
+          <div class="panel-heading">
+            <h3 class="panel-title">Payments</h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">  
+              <table class="table table-striped custom-table m-b-0">
+                <thead>
+                  <tr>
+                    <th>Invoice ID</th>
+                    <th>Client</th>
+                    <th>Payment Type</th>
+                    <th>Paid Date</th>
+                    <th>Paid Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="invoice-view.html">#INV-0004</a></td>
+                    <td>
+                      <h2><a href="#">Barry Cuda</a></h2>
+                    </td>
+                    <td>Paypal</td>
+                    <td>11 Jun 2017</td>
+                    <td>$380</td>
+                  </tr>
+                  <tr>
+                    <td><a href="invoice-view.html">#INV-0005</a></td>
+                    <td>
+                      <h2><a href="#">Tressa Wexler</a></h2>
+                    </td>
+                    <td>Paypal</td>
+                    <td>21 Jul 2017</td>
+                    <td>$500</td>
+                  </tr>
+                  <tr>
+                    <td><a href="invoice-view.html">#INV-0006</a></td>
+                    <td>
+                      <h2><a href="#">Ruby Bartlett</a></h2>
+                    </td>
+                    <td>Paypal</td>
+                    <td>28 Aug 2017</td>
+                    <td>$60</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <a href="payments.html" class="text-primary">View all payments</a>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-table">
+          <div class="panel-heading">
+            <h3 class="panel-title">Recent Projects</h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-striped custom-table m-b-0">
+                <thead>
+                  <tr>
+                    <th class="col-md-3">Project Name </th>
+                    <th class="col-md-3">Progress</th>
+                    <th class="text-right col-md-1">Action</th>
+                  </tr>
+                </thead> 
+                <tbody>
+                  <% @recent_projects.each do |project| %>
+                  <tr>
+                    <td>
+                      <h2><a href="<%= project_path(project)%>"><%= project.name %></a></h2>
+                      <small class="block text-ellipsis">
+                        <span class="text-xs">
+                          <%= project.tasks.where("status != ? ", "done" ).count %>
+                        </span><span class="text-muted">open tasks, </span>
+                        <span class="text-xs">
+                          <%= project.tasks.where(status: "done").count %>
+                        </span> <span class="text-muted">tasks completed</span>
+                      </small>
+                    </td>
+                    <td>
+                      <div class="progress progress-xs progress-striped">
+                        <% not_done_task = project.tasks.where("status != ? ", "done" ).count  %>
+                        <% done_task = project.tasks.where(status: "done").count  %>
+                        <% if done_task > not_done_task %>
+                          <div class="progress-bar bg-success" role="progressbar" data-toggle="tooltip" title="70%" style="width: 70%"></div>
+                        <% else %>
+                          <div class="progress-bar bg-success" role="progressbar" data-toggle="tooltip" title="40%" style="width: 40%"></div>
+                        <% end %>
+                      </div> 
+                    </td>
+                    <td class="text-right">
+                      <div class="dropdown">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                        <ul class="dropdown-menu pull-right">
+                          <li><a href="<%= edit_project_path(project) %>" title="Edit"><i class="fa fa-pencil m-r-5"></i> Edit</a></li>
+                          <li>
+                            <%= link_to( project_path(project) , html_options = {method: :delete, data: { confirm: 'Are you sure?' }}) do %>
+                              <i class="fa fa-trash-o m-r-5"></i> Delete
+                            <% end %>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <a href="<%= projects_path %>" class="text-primary">View all projects</a>
+          </div>
+        </div>
+        <div class="panel panel-table">
+          <div class="panel-heading">
+            <h3 class="panel-title">Clients</h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-striped custom-table m-b-0">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @clients.each do |client| %>
+                    <tr>
+                      <td>
+                        <a href="#" class="avatar">a</a>
+                        <h2><a href="<%= user_path(client) %>"><%= full_name(client) %> <span>CEO</span></a></h2>
+                      </td>
+                      <td><%= client.email %></td>
+                      <td>
+                        <div class="dropdown action-label">
+                          <a class="btn btn-white btn-sm rounded dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-dot-circle-o text-success"></i> Active <i class="caret"></i>
+                          </a>
+                          <ul class="dropdown-menu pull-right">
+                            <li><a href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a></li>
+                            <li><a href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a></li>
+                          </ul>
+                        </div>
+                      </td>
+                      <td class="text-right">
+                        <div class="dropdown">
+                          <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                          <ul class="dropdown-menu pull-right">
+                            <li><a href="#" title="Edit"><i class="fa fa-pencil m-r-5"></i> Edit</a></li>
+                            <li><a href="#" title="Delete"><i class="fa fa-trash-o m-r-5"></i> Delete</a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <a href="<%= users_path %>" class="text-primary">View all clients</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-table">
+          <div class="panel-heading">
+            <h3 class="panel-title">Recent Tasks</h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-striped custom-table m-b-0">
+                <thead>
+                  <tr>
+                    <th class="col-md-3">Task Name </th>
+                    <th class="col-md-3">Progress</th>
+                    <th class="text-right col-md-1">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @recent_tasks.each do |task| %>
+                  <tr>
+                    <td>
+                      <h2><a href="<%= task_path(task)%>"><%= task.name %></a></h2>
+                      <small class="block text-ellipsis">
+                        <span class="text-xs">
+                          <%= task.status %>
+                        </span><span class="text-muted">task status, </span>
+                        <span class="text-xs">
+                          <%= task.priority %>
+                        </span> <span class="text-muted">task Priority </span>
+                      </small>
+                    </td>
+                    <td>
 
+                      <div class="progress progress-xs progress-striped">
+                        <div class="progress-bar bg-success" role="progressbar" data-toggle="tooltip" title="65%" style="width: 65%"></div>
+                      </div>
+
+                    </td>
+                    <td class="text-right">
+                      <div class="dropdown">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                        <ul class="dropdown-menu pull-right">
+                          <li><a href="<%= edit_task_path(task) %>" title="Edit"><i class="fa fa-pencil m-r-5"></i> Edit</a></li>
+                          <li>
+                            <%= link_to( task_path(task) , html_options = {method: :delete, data: { confirm: 'Are you sure?' }}) do %>
+                              <i class="fa fa-trash-o m-r-5"></i> Delete
+                            <% end %>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <a href="<%= tasks_path %>" class="text-primary">View all tasks</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="themes">
+      <div class="themes-icon"><i class="fa fa-cog"></i></div>
+      <div class="themes-body">
+        <ul id="theme-change" class="theme-colors">
+          <li><a href="https://dreamguys.co.in/smarthr/orange/index.html"><span class="theme-orange"></span></a></li>
+          <li><a href="https://dreamguys.co.in/smarthr/purple/index.html"><span class="theme-purple"></span></a></li> 
+          <li><a href="index.html"><span class="theme-blue"></span></a></li>
+          <li><a href="https://dreamguys.co.in/smarthr/maroon/index.html"><span class="theme-maroon"></span></a></li>
+          <li><a href="https://dreamguys.co.in/smarthr/light/index.html"><span class="theme-light"></span></a></li> 
+          <li><a href="https://dreamguys.co.in/smarthr/dark/index.html"><span class="theme-dark"></span></a></li> 
+          <li><a href="https://dreamguys.co.in/smarthr/rtl/index.html"><span class="theme-rtl">RTL</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="notification-box">
+    <div class="msg-sidebar notifications msg-noti">
+      <div class="topnav-dropdown-header">
+        <span>Messages</span>
+      </div>
+      <div class="drop-scroll msg-list-scroll">
+        <ul class="list-box">
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">R</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author">Richard Miles </span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item new-message">
+                <div class="list-left">
+                  <span class="avatar">J</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author">John Doe</span>
+                  <span class="message-time">1 Aug</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">T</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author"> Tarah Shropshire </span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">M</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author">Mike Litorus</span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">C</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author"> Catherine Manseau </span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">D</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author"> Domenic Houston </span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">B</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author"> Buster Wigton </span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">R</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author"> Rolland Webber </span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">C</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author"> Claire Mapes </span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">M</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author">Melita Faucher</span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">J</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author">Jeffery Lalor</span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">L</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author">Loren Gatlin</span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="chat.html">
+              <div class="list-item">
+                <div class="list-left">
+                  <span class="avatar">T</span>
+                </div>
+                <div class="list-body">
+                  <span class="message-author">Tarah Shropshire</span>
+                  <span class="message-time">12:28 AM</span>
+                  <div class="clearfix"></div>
+                  <span class="message-content">Lorem ipsum dolor sit amet, consectetur adipiscing</span>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="topnav-dropdown-footer">
+        <a href="chat.html">See all messages</a>
+      </div>
+    </div>
+  </div>      --> 
+</div>
+
+<!-- <div class="sidebar-overlay" data-reff="#sidebar"></div> -->
+<!-- <script type="text/javascript" src="assets/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/js/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="assets/plugins/morris/morris.min.js"></script>
+<script type="text/javascript" src="assets/plugins/raphael/raphael-min.js"></script>
+<script type="text/javascript" src="assets/js/app.js"></script>
+<script>
+    var data = [
+    { y: '2014', a: 50, b: 90},
+    { y: '2015', a: 65,  b: 75},
+    { y: '2016', a: 50,  b: 50},
+    { y: '2017', a: 75,  b: 60},
+    { y: '2018', a: 80,  b: 65},
+    { y: '2019', a: 90,  b: 70},
+    { y: '2020', a: 100, b: 75},
+    { y: '2021', a: 115, b: 75},
+    { y: '2022', a: 120, b: 85},
+    { y: '2023', a: 145, b: 85},
+    { y: '2024', a: 160, b: 95}
+  ],
+  config = {
+    data: data,
+    xkey: 'y',
+    ykeys: ['a', 'b'],
+    labels: ['Total Income', 'Total Outcome'],
+    fillOpacity: 0.6,
+    hideHover: 'auto',
+    behaveLikeLine: true,
+    resize: true,
+    pointFillColors:['#ffffff'],
+    pointStrokeColors: ['black'],
+    gridLineColor: '#eef0f2',
+    lineColors:['gray','#00c5fb']
+  };
+config.element = 'area-chart';
+Morris.Area(config);
+config.element = 'line-chart';
+Morris.Line(config);
+config.element = 'bar-chart';
+Morris.Bar(config);
+config.element = 'stacked';
+config.stacked = true;
+Morris.Bar(config);
+Morris.Donut({
+  element: 'pie-chart',
+  data: [
+  {label: "Employees", value: 30},
+  {label: "Clients", value: 15},
+  {label: "Projects", value: 45},
+  {label: "Tasks", value: 10}
+  ]
+});
+</script>
+ -->
