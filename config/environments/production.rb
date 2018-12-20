@@ -90,17 +90,17 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
-  config.action_mailer.asset_host = "https://task-manager-inuscg.herokuapp.com"
+  config.action_mailer.asset_host = "https://pms-inuscg.herokuapp.com"
   # config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.default_url_options = {
-    host: 'https://task-manager-inuscg.herokuapp.com'
+    host: 'https://pms-inuscg.herokuapp.com'
   }
   config.action_mailer.delivery_method = :smtp
  
   ActionMailer::Base.smtp_settings = {
     address: ENV['SMTP_ADDRESS'],
     port: ENV['SMTP_PORT'],
-    domain: ENV['DOMAIN_NAME'],
+    domain: ENV['DOMAIN_NAME'], 
     authentication: "plain",
     enable_starttls_auto: true,
     user_name: ENV['SMTP_USERNAME'],
