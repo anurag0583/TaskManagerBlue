@@ -7,7 +7,7 @@ class User < ApplicationRecord
  	has_attached_file :photo, :styles => { :small => "150x150>" },
                   :url  => "/assets/products/:id/:style/:basename.:extension",
                   :path => ":rails_root/public/assets/products/:id/:style/:basename.:extension",
-                  :default_url => ActionController::Base.helpers.asset_path('user.jpg')
+                  # :default_url => ActionController::Base.helpers.asset_path('user.jpg')
 
 
 	# validates_attachment_presence :photo
