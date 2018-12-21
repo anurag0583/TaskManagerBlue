@@ -19,7 +19,6 @@
 .env
 coverage/
 public/uploads/
-public
 .**.swp
 
 #Ignore PUMA
